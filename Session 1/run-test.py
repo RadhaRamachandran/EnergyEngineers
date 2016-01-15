@@ -8,7 +8,6 @@
 from bibliopixel import *
 from bibliopixel.drivers.LPD8806 import *
 from bibliopixel import LEDStrip
-from bibliopixel.colors import colors
 
 import time
 
@@ -31,13 +30,13 @@ b = (0, 0, 180)
 
 # In[ ]:
 
-led.fillrgb(0,0,0) # turns everything off
+led.fillRGB(0,0,0) # turns everything off
 led.update()
 
 for i in range (numLeds):
     print ('LED '+str(i+1))
     led.set(i, b)
-    led.update
+    led.update()
     time.sleep(4)
 
 print ('All LEDs!')
