@@ -79,7 +79,7 @@ color_gn_rd
 color_disp = []
 ledON = []
 for a,b,c in clean_ratio: 
-    color_disp.append(np.floor(int(b)/100))
+    color_disp.append(colornp.floor(int(b)/100))
     ## 100's position represented by color bar --> going from green to red for 100 to 2000 ish
     
     ledON.append(np.floor(np.remainder(int(b),100) * LedsPerSide/100))
@@ -90,14 +90,14 @@ for a,b,c in clean_ratio:
 
 # ### Display yearly WattTime data
 
-# In[9]:
+# In[1]:
 
 DisplaySide = 1 # Set the side on which the data will be displayed here.
-FirstLed_bottom = LedsPerSide*(DisplaySide-1)+1
+FirstLed_bottom = LedsPerSide*(DisplaySide-1)
 FinalLed_bottom = LedsPerSide*DisplaySide
 
-FirstLed_top = LedsPerSide*(DisplaySide + 4 -1)+1
-FinalLed_bottom = LedsPerSide*(DisplaySide + 4 -1)+1
+FirstLed_top = LedsPerSide*(DisplaySide + 4 -1)
+FinalLed_top = LedsPerSide*(DisplaySide + 4 -1)
 
 
 # In[10]:
@@ -130,12 +130,12 @@ while True:
         print month, year
 
         #Set bottom panel
-        led_set(ledFirst_bottom, ledON[i], color_disp[i]) 
+        led_set(ledFirst_bottom, ledON[i], color_gn_rd[color_disp[i]]) 
         #ledON gives the number of LED's that will be turned on
         #color_disp specifies color
 
         #Set top panel
-        led_set(ledFirst_bottom + 2*int(i/3), 2, (200,150,100))
+        led_set(ledFirst_top + 2*int(i/3), 2, (200,150,100))
        
 
         time.sleep(2.)
