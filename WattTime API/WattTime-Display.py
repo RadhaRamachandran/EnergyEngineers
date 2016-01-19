@@ -130,12 +130,12 @@ while True:
         print month, year
 
         #Set bottom panel
-        led_set(ledFirst_bottom, ledON[i], color_gn_rd[color_disp[i]]) 
+        led_set(FirstLed_bottom, ledON[i], color_gn_rd[color_disp[i]]) 
         #ledON gives the number of LED's that will be turned on
         #color_disp specifies color
 
         #Set top panel
-        led_set(ledFirst_top + 2*int(i/3), 2, (200,150,100))
+        led_set(FirstLed_top + 2*int(i/3), 2, (200,150,100))
        
 
         time.sleep(2.)
