@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[27]:
+# In[1]:
 
 from bibliopixel import *
 from bibliopixel.drivers.LPD8806 import *
@@ -11,7 +11,7 @@ import csv
 import numpy as np
 
 
-# In[28]:
+# In[2]:
 
 LedsPerSide = 8
 
@@ -25,7 +25,7 @@ led=LEDStrip(driver)
 
 # ### Import data
 
-# In[29]:
+# In[4]:
 
 clean_ratio = [] 
 with open('Carbon_lbsperMW_monthly_average.csv') as csvfile:
@@ -39,7 +39,7 @@ with open('Carbon_lbsperMW_monthly_average.csv') as csvfile:
 
 # ### Generating color scale
 
-# In[4]:
+# In[5]:
 
 red = 0
 green = 255
@@ -48,7 +48,7 @@ color_gn_rd = []
 color_gn_rd.append((green, red, 0)) ## the lights are GRB format
 
 
-# In[5]:
+# In[6]:
 
 while(red < 255): ## start with green and increase red
     red += stepSize;
@@ -63,7 +63,7 @@ while(green > 0): ## start with red + green and decrease green
     color_gn_rd.append((green,red,0)); 
 
 
-# In[25]:
+# In[7]:
 
 ### from US Energy Information Agency Website: https://www.eia.gov/tools/faqs/faq.cfm?id=74&t=11
 ### Max value - 2170 for Lignite
@@ -92,7 +92,7 @@ for a,b,c in clean_ratio:
 
 # ### Display yearly WattTime data
 
-# In[7]:
+# In[8]:
 
 DisplaySide = 1 # Set the side on which the data will be displayed here.
 FirstLed_bottom = LedsPerSide*(DisplaySide-1)
@@ -102,7 +102,7 @@ FirstLed_top = LedsPerSide*(DisplaySide + 4 -1)
 FinalLed_top = LedsPerSide*(DisplaySide + 4 ) - 1
 
 
-# In[8]:
+# In[9]:
 
 def led_set(start_position, TotalLeds, color):
     led.fill(color, start=start_position,end=start_position+TotalLeds-1)
@@ -110,7 +110,7 @@ def led_set(start_position, TotalLeds, color):
     return
 
 
-# In[9]:
+# In[10]:
 
 print ('Starting Display')
 print ('Press \'control + c\' to stop' )
@@ -119,7 +119,7 @@ year = 2014
 months = ['January','February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 
-# In[26]:
+# In[11]:
 
 #led.fill((0,0,0) # All LEDs off.
          
@@ -148,9 +148,4 @@ while True:
 
         time.sleep(2.)
         
-
-
-# In[ ]:
-
-
 
