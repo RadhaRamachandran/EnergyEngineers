@@ -79,7 +79,7 @@ color_gn_rd
 color_disp = []
 ledON = []
 for a,b,c in clean_ratio: 
-    color_disp.append(colornp.floor(int(b)/100))
+    color_disp.append(np.floor(int(b)/100))
     ## 100's position represented by color bar --> going from green to red for 100 to 2000 ish
     
     ledON.append(np.floor(np.remainder(int(b),100) * LedsPerSide/100))
