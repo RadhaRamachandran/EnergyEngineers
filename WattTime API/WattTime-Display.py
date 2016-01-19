@@ -117,7 +117,8 @@ months = ['January','February', 'March', 'April', 'May', 'June', 'July', 'August
 
 # In[ ]:
 
-
+led.fill((0,0,0) # All LEDs off.
+         
 while True: 
     for i, month in enumerate(months):
         print month, year
