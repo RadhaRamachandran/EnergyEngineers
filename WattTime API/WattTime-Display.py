@@ -61,11 +61,9 @@ while(green > 0): ## start with red + green and decrease green
     if(green < 6):
         green = 0; 
     color_gn_rd.append((green,red,0)); 
-    
-color_gn_rd
 
 
-# In[5]:
+# In[6]:
 
 ### from US Energy Information Agency Website: https://www.eia.gov/tools/faqs/faq.cfm?id=74&t=11
 ### Max value - 2170 for Lignite
@@ -90,7 +88,7 @@ for a,b,c in clean_ratio:
 
 # ### Display yearly WattTime data
 
-# In[1]:
+# In[7]:
 
 DisplaySide = 1 # Set the side on which the data will be displayed here.
 FirstLed_bottom = LedsPerSide*(DisplaySide-1)
@@ -100,15 +98,15 @@ FirstLed_top = LedsPerSide*(DisplaySide + 4 -1)
 FinalLed_top = LedsPerSide*(DisplaySide + 4 -1)
 
 
-# In[10]:
+# In[8]:
 
 def led_set(start_position, TotalLeds, color):
-    led.fill(color, start=start_position,end=start_position+TotalLeds)
+    led.fill(color, start=start_position,end=start_position+TotalLeds-1)
     led.update()
     return
 
 
-# In[11]:
+# In[9]:
 
 print ('Starting Display')
 print ('Press \'control + c\' to stop' )
@@ -119,25 +117,26 @@ months = ['January','February', 'March', 'April', 'May', 'June', 'July', 'August
 
 # In[ ]:
 
-led.fill((0,0,0),start=FirstLed_bottom, end=FinalLed_bottom)
-led.update()
 
-#Turn all lights off Top    
-led.fill((0,0,0),start=FirstLed_top, end=FinalLed_top)
-led.update()
 while True: 
     for i, month in enumerate(months):
         print month, year
 
         #Set bottom panel
+        led.fill((0,0,0),start=FirstLed_bottom, end=FinalLed_bottom)
+        led.update()
         led_set(FirstLed_bottom, np.int(ledON[i]), color_gn_rd[np.int(color_disp[i])]) 
         #ledON gives the number of LED's that will be turned on
         #color_disp specifies color
-
+        
+        #Turn all lights off top    
+        led.fill((0,0,0),start=FirstLed_top, end=FinalLed_top)
+        led.update()
         #Set top panel
-        led_set(FirstLed_top + 2*int(i/3), 2, (200,150,100))
+        led_set(FirstLed_top + np.floor(i/3), 2, (200,150,100))
        
 
         time.sleep(2.)
         
+
 
