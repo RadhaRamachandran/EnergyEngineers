@@ -133,7 +133,7 @@ while True:
         led.fill((0,0,0),start=FirstLed_top, end=FinalLed_top)
         led.update()
         #Set top panel
-        led_set(FirstLed_top + np.int(np.floor(i/3)), 2, (200,150,100))
+        led_set(FirstLed_top + 2*np.int(np.floor(i/3)), 2, (200,150,100))
        
 
         time.sleep(2.)
