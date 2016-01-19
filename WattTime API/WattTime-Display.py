@@ -102,8 +102,8 @@ FinalLed_top = LedsPerSide*(DisplaySide + 4 -1)
 
 # In[10]:
 
-def led_set(start_position, TotalLEDs, color):
-    led.fill(color, start=start_position,end=start_position+numLEDs)
+def led_set(start_position, TotalLeds, color):
+    led.fill(color, start=start_position,end=start_position+TotalLeds)
     led.update()
     return
 
@@ -130,12 +130,12 @@ while True:
         print month, year
 
         #Set bottom panel
-        led_set(FirstLed_bottom, ledON[i], color_gn_rd[color_disp[i]]) 
+        led_set(ledFirst_bottom, ledON[i], color_gn_rd[np.int(color_disp[i])]) 
         #ledON gives the number of LED's that will be turned on
         #color_disp specifies color
 
         #Set top panel
-        led_set(FirstLed_top + 2*int(i/3), 2, (200,150,100))
+        led_set(ledFirst_top + 2*int(i/3), 2, (200,150,100))
        
 
         time.sleep(2.)
