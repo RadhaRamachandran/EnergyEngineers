@@ -85,7 +85,5 @@ twitter_stream = Stream(auth, MyListener())
 twitter_stream.filter(track=['#trump']) #set hashtag here; 
 
 
-# In[ ]:
-
 
 

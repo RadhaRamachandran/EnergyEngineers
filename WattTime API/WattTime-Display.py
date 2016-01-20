@@ -121,7 +121,7 @@ months = ['January','February', 'March', 'April', 'May', 'June', 'July', 'August
 
 # In[11]:
 
-#led.fill((0,0,0) # All LEDs off.
+led.all_off() # All LEDs off.
          
 while True: 
     for i, month in enumerate(months):
