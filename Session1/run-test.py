@@ -3,13 +3,21 @@
 
 # ### Importing Libraries
 
-# In[ ]:
+# In[1]:
 
 from bibliopixel import *
 from bibliopixel.drivers.LPD8806 import *
 from bibliopixel import LEDStrip
 
 import time
+from subprocess import call
+
+
+# ### Shell commands to reset spidev
+
+# In[ ]:
+
+call(["sudo", "chmod", "a+rw", "/dev/spidev0.0"])
 
 
 # ### Initial setup
@@ -41,8 +49,18 @@ for i in range (numLeds):
 
 print ('All LEDs!')
 print ('Press \'Ctrl + C\' to stop')
-while(true):
-    led.fillrgb(b)
+while (TRUE):
+    led.fillRGB(b)
     led.update()
     time.sleep(4)
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
 
