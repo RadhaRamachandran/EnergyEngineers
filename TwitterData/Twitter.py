@@ -54,21 +54,21 @@ api = tweepy.API(auth)
 class MyListener(StreamListener):
 
     def flash(self, delay, color):
-        #led.fill(color)
-        print color
-        #led.update()
+        led.fill(color)
+        #print color
+        led.update()
         time.sleep(delay)
         
-        #led.all_off()
-        #led.update()
-        print delay
+        led.all_off()
+        led.update()
+        #print delay
         return True
 
  
     def on_data(self, data):
         try:
             
-            print ('Some tweeted #' + hashtag +'!')
+            print ('Someone tweeted #' + hashtag +'!')
             
             self.flash(0.5, (np.random.randint(1,255),np.random.randint(1,255),np.random.randint(1,255)))
             with open('twitter_out.json', 'a') as f:  #set output filename here
