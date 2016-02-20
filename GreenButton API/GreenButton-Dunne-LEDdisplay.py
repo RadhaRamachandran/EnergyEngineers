@@ -5,26 +5,16 @@
 
 # In[1]:
 
-get_ipython().magic(u'matplotlib inline')
-
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.io.json import json_normalize
 
-import matplotlib
-import matplotlib.pyplot as plt
-import plotly.plotly as py
-import plotly.tools as tls
-from plotly.graph_objs import *
-
 import time
 
 from datetime import datetime
 from dateutil import tz
-
-from lxml import objectify
 
 from bibliopixel import *
 from bibliopixel.drivers.LPD8806 import *
@@ -47,7 +37,7 @@ red = 0
 green = 255
 stepSize = 50
 color_gn_rd = []
-color_gn_rd.append((red, green, 0)) ## the lights are GRB format
+color_gn_rd.append((red, green, 0)) 
 
 
 # In[4]:
@@ -82,9 +72,9 @@ led=LEDStrip(driver)
 # In[6]:
 
 def led_set(start_position, numLEDs, color): ## Fills the colors
-    #led.fill(color, start=start_position,end=start_position+numLEDs)
-    #led.update()
-    print color
+    led.fill(color, start=start_position,end=start_position+numLEDs)
+    led.update()
+    #print color
     return
 
 def led_pulse(start_position, numLEDs, color):
@@ -95,16 +85,16 @@ def led_pulse(start_position, numLEDs, color):
     for i in intensity:
         color_new = (int(color[0]*i),int(color[1]*i),int(color[2]*i)) 
         # There is probably a more elegant way to do this.. 
-        print color_new
-        #led.fill(color_new, start=start_position,end=start_position+numLEDs)
-        #led.update()
+        #print color_new
+        led.fill(color_new, start=start_position,end=start_position+numLEDs)
+        led.update()
         time.sleep(0.1)
 
     for i in reversed(intensity):
         color_new = (int(color[0]*i),int(color[1]*i),int(color[2]*i)) 
-        print color_new
-        #led.fill(color_new, start=start_position,end=start_position+numLEDs)
-        #led.update()
+        #print color_new
+        led.fill(color_new, start=start_position,end=start_position+numLEDs)
+        led.update()
         time.sleep(0.1)        
 
 
@@ -140,7 +130,6 @@ def yearly_data():
             print 'Date: ', item[0]
             print 'Average use: ', item [1]
             color_index = int(item[1]/ScalingSteps)
-            print color_index
             # print color_index
             color = color_gn_rd[color_index]
             led_set(0, 80, color)
