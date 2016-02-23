@@ -11,7 +11,6 @@ import numpy as np
 import time
 
 from datetime import datetime
-from dateutil import tz
 
 from bibliopixel import *
 from bibliopixel.drivers.LPD8806 import *
@@ -21,21 +20,19 @@ import bibliopixel.colors as colors
 
 # ### Generating color scale
 
-# In[2]:
+# In[21]:
 
 red = 0
-green = 255
+green = 100
 stepSize = 50
 color_gn_rd = []
 color_gn_rd.append((red, green, 0)) ## the lights are GRB format
 
 
-# In[3]:
+# In[22]:
 
-while(red < 255): ## start with green and increase red
+while(red < 205): ## start with green and increase red
     red += stepSize;
-    if(red > 245):
-        red = 255; 
     color_gn_rd.append((red, green, 0))
 
 while(green > 0): ## start with red + green and decrease green
@@ -45,11 +42,12 @@ while(green > 0): ## start with red + green and decrease green
     color_gn_rd.append((red, green, 0)); 
     
 total_colors = len(color_gn_rd)
+total_colors
 
 
 # ### Setting up LEDs
 
-# In[4]:
+# In[ ]:
 
 LedsPerSide = 10
 numLeds= LedsPerSide*4*2 ##x/side * 4 sides * 2 levels
@@ -59,7 +57,7 @@ led=LEDStrip(driver)
 
 # ### Defining Flashing modes
 
-# In[5]:
+# In[12]:
 
 def led_set(start_position, numLEDs, color): ## Fills the colors
     led.fill(color, start=start_position,end=start_position+numLEDs)
@@ -90,7 +88,7 @@ def led_pulse(start_position, numLEDs, color):
 
 # ### Displaying Daily Total Values for the entire year of data
 
-# In[11]:
+# In[17]:
 
 def yearly_data():
     time_stamp = []
@@ -100,24 +98,27 @@ def yearly_data():
         for row in cf:
             time_stamp.append(row['time_stamp'])
             value.append(float(row['value']))
+            max_value = max(value)
+            min_value = min(value)
+            ScalingSteps = (max_value + 0.1 - min_value)/(total_colors)
     while (True):
         print 'Starting Display'
         print 'Press \'Control + C\' to stop'
-        max_value = max(value)
-        ScalingSteps = (max_value + 0.1)/(total_colors)
+        
         for ts, val in zip(time_stamp,value):
             print 'Date: ', ts
             print 'Average use: ', val
-            color_index = int(val/ScalingSteps)
+            color_index = int((val - min_value)/ScalingSteps)
             #print color_index
             #print color_index
             color = color_gn_rd[color_index]
             led_set(0, 80, color)
+            time.sleep(0.5)
 
 
 # ### Displaying Daily Energy Usage on Bottom with last 30 days' average on Top
 
-# In[23]:
+# In[6]:
 
 def daily_vs_past30days():
     time_stamp = []
@@ -137,7 +138,8 @@ def daily_vs_past30days():
             except:
                 average.append(float('nan'))
     max_value = max(value)
-    ScalingSteps = (max_value + 0.1)/total_colors
+    min_value = min(value)
+    ScalingSteps = (max_value + 0.1 - min_value)/total_colors
             
     while (True):
         print 'Starting Display'
@@ -146,7 +148,7 @@ def daily_vs_past30days():
         for ts, val, av in zip(time_stamp, value, average):
             print 'Date: ', ts
             print 'Total use: ', val
-            color_index = int(val/ScalingSteps)
+            color_index = int((val-min_value)/ScalingSteps)
 
             # print color_index
             color = color_gn_rd[color_index]
@@ -154,7 +156,7 @@ def daily_vs_past30days():
 
             print 'Last 30 days average: ', av
             try:
-                color_index = int(df_RollingMean[count]/ScalingSteps)
+                color_index = int(av/ScalingSteps)
                 color = color_gn_rd[color_index]
                 led_set(40, 80, color)
 
@@ -162,13 +164,13 @@ def daily_vs_past30days():
                 color = (0,0,0)
                 led_set(40, 80, color)
 
-            time.sleep(0.2)
+            time.sleep(0.4)
     
 
 
 # ### Displaying 1 Week's Energy Use (res: every half-hour )
 
-# In[8]:
+# In[7]:
 
 def OneWeek_data():
     time_stamp = []
@@ -181,7 +183,9 @@ def OneWeek_data():
 
     days = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     max_value = max(value)
-    ScalingSteps = (max_value + 0.1)/total_colors
+    min_value = 10 # there is a zero value that looks wrong. 
+                   # There is a better way to avoid zero values. I will remove them soon. 
+    ScalingSteps = (max_value + 0.1 - 10)/total_colors
     date = []
     while (True):
         print 'Starting Display'
@@ -200,36 +204,24 @@ def OneWeek_data():
             print 'Electricity Usage: ', val
             color_index = int((val)/ScalingSteps)
 
-            print color_index
-            color = color_gn_rd[color_index]
-            led_set(0, 80, color)
-            time.sleep(0.2)
+            #print color_index
+            try:
+                color = color_gn_rd[color_index]
+                led_set(0, 80, color)
+                time.sleep(0.4)
+            except: 
+                color = color_gn_rd[0]
+                led_set(0, 80, color)
+                time.sleep(0.4)
+                
 
             date = time.strftime("%Y-%m-%d",  time.strptime(ts, "%Y-%m-%d %H:%M:%S"))
 
 
-# In[11]:
+# In[8]:
 
 print 'Functions Available:'
 print 'yearly_data()'
 print 'daily_vs_past30days()'
 print 'OneWeek_data()'
-
-
-# In[24]:
-
-daily_vs_past30days()
-
-
-# In[17]:
-
-with open('df_RollingMean.csv') as f:
-    cf = csv.DictReader(f, fieldnames=['time_stamp', 'value'])
-    for row in cf:
-        print row
-
-
-# In[ ]:
-
-
 
