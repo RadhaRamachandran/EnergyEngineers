@@ -142,7 +142,7 @@ class MyListener(StreamListener):
 
 
 print 'What hashtag would you like to track?'
-hashtag = raw_input('Enter here: #')
+hashtag = raw_input('Enter it here: #')
 
 #twitter_stream = Stream(auth, MyListener())
 #twitter_stream.filter(track=['#trump']) #set hashtag here; 
