@@ -126,7 +126,7 @@ class MyListener(StreamListener):
     def on_data(self, data):
         try:
             
-            self.flash(0.5, (np.random.randint(1,255),np.random.randint(1,255),np.random.randint(1,255)))
+            self.flash(0.5, (np.random.randint(0,255),np.random.randint(0,255),np.random.randint(0,255)))
             #with open('twitter_out.json', 'a') as f:  #set output filename here
                # f.write(data) return True
             print datetime.now().strftime('%Y-%m-%d %H:%M:%S'), ': someone tweeted #' + hashtag +'!'
