@@ -6,18 +6,18 @@
 import numpy as np
 import csv
 import time
-import matplotlib
-import matplotlib.pyplot as plt
+#import matplotlib
+#import matplotlib.pyplot as plt
 import datetime
 #import pandas as pd
-#from LEDsetup import *
+from LEDsetup import *
 
 
 # ### Open datafiles
 
 # In[31]:
 
-def OpenData(filename):
+def OpenDailyData(filename):
     time_stamp = []
     value = []
     with open(filename) as f:
@@ -32,6 +32,24 @@ def OpenData(filename):
                 
     
     return(time_stamp, value)
+
+
+# In[ ]:
+
+def OpenMonthlyData(filename):
+    month = []
+    year = []
+    value = []
+    with open(filename) as f:
+        cf = csv.DictReader(f, fieldnames=['month','year', 'value'])
+        for row in cf:
+            #print(row)
+            month.append(row['month'])
+            year.append(row['year'])
+            value.append(float(row['value']))
+                
+    
+    return(month, year, value)
 
 
 # ### Generating color scale
@@ -57,48 +75,39 @@ def OpenData(filename):
 
 # In[22]:
 
-def ColorScaler(color1, color2, value):
-    min_value = min(value)
-    max_value = max(value)
+def ColorScaler(color_low, color_high, value, min_value = 0, max_value = 0):
+    if((min_value == 0) & (max_value == 0)):
+        min_value = min(value)
+        max_value = max(value)
     clr_data = []
     
     for val in value:
         ratio = (val - min_value)/(max_value-min_value)
-        new_color = (int(color2[0]*ratio+color1[0]*(1-ratio)),
-                     int(color2[1]*ratio+color1[1]*(1-ratio)), 
-                     int(color2[2]*ratio+color1[2]*(1-ratio)))
-        print(new_color)
+        new_color = (int(color_high[0]*ratio+color_low[0]*(1-ratio)),
+                     int(color_high[1]*ratio+color_low[1]*(1-ratio)), 
+                     int(color_high[2]*ratio+color_low[2]*(1-ratio)))
+        #print(new_color)
         clr_data.append(new_color)
-
-        
+                
     return clr_data
-
-
-# In[23]:
-
-clr_data = ColorScaler((0,255,0),(255,0,0), range(10))
 
 
 # In[26]:
 
-def NumScaler(led1, led2, value):
-    min_value = min(value)
-    max_value = max(value)
+def NumScaler(led1, led2, value, min_value = 0, max_value = 0):
+    if((min_value == 0) & (max_value == 0)):
+        min_value = min(value)
+        max_value = max(value)
+    
     num_data = []
     
     for val in value:
         ratio = (val - min_value)/(max_value-min_value)
         new_num = led1 + int((led2-led1)*ratio)
-        print(new_num)
         num_data.append(new_num)
 
         
     return num_data
-
-
-# In[27]:
-
-num_data = NumScaler(0,39,range(10))
 
 
 # In[28]:
@@ -108,7 +117,6 @@ def Flash(num_flashes, delay, color, led1 = 0, led2 = 79):
         led.fill(color, led1, led2)
         led.update
         time.sleep(delay)
-        
 
 
 # In[ ]:
